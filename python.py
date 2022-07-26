@@ -19,30 +19,27 @@ pages = [
 			
 def main ():
     for page in pages:
-        top_html = open('./templates/top.html').read()
-        bottom_html = open('./templates/bottom.html').read()
-        input_filecontents = page['filename']
-        content = open(input_filecontents).read()
-
-# Give this a try: "w+" can be used to overwrite a file if it exists or create a new file if it doesn't.
-        if input_filecontents == "./content/about.html":
-            about_html = top_html + content + bottom_html            
-            open('./docs/about.html', 'w+').write(about_html)
-        
-        if input_filecontents == "./content/index.html":
-            index_html = top_html + content + bottom_html
-            open('./docs/index.html', 'w+').write(index_html)
-        
-        if input_filecontents == "./content/resume.html":
-            resume_html = top_html + content + bottom_html
-            open('./docs/resume.html', 'w+').write(resume_html)
+        input_filecontents = page['filename'] 
+        output_filename = page['output']
+        title_name = page['title']
+        content = open(input_filecontents).read()  
+        template_data = open_template()
+        finished_index_page = template_data.replace("{{content}}", content). replace("{{title}}", title_name) 
+        write_output(output_filename, finished_index_page)
+                
+def open_template():
+	template = open('./templates/base.html').read()
+	return template
+     	
+def write_output(output_filename, finished_index_page):
+    open(output_filename, "w+").write(finished_index_page)
             
-           
+                          
 for page in pages:
     page_title = page['title']
     main ()
-		
 	
+
 
 
 
